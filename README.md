@@ -70,10 +70,10 @@
 
 - 제안 - 답변 (1:1)
 - 제안 - 파일 (1:N)
-- 사용자(일반) - 게시글 (1:N)
+- 사용자(일반) - 게시글 사용자(일반)(1:N)
 - 사용자(관리자) - 답변 (1:N)
 
 ---
 
 ### 엔티티 구조
-<img width="300" alt="엔티티구조" src="https://user-images.githubusercontent.com/88015037/127769272-d729da1f-c780-4d0e-af96-b805bdef8d20.jpg">
+<img width="300" alt="엔티티구조" src="https://user-images.githubusercontent.com/88015037/127770722-35e5ee6b-392c-4329-8482-98fdf8c3b876.jpg">

@@ -76,4 +76,4 @@
 ---
 
 ### 엔티티 구조
-<img width="300" alt="엔티티구조" src="https://user-images.githubusercontent.com/88015037/127761265-440c519a-a08e-4ae9-bac2-7f59605435c0.jpg">
+<img width="300" alt="엔티티구조" src="https://user-images.githubusercontent.com/88015037/127769107-614654a8-623f-4ade-b309-3120aa2bcee5.jpg">

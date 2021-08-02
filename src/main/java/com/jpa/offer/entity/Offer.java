@@ -64,12 +64,12 @@ public class Offer extends BaseTimeEntity{
         if(answer != null) { changeAnswer(answer); }
     }
 
-    private Offer changeAnswer(Answer answer) {
+    public Offer changeAnswer(Answer answer) {
         this.answer = answer;
         return this;
     }
 
-    private Offer changeUser(User user) {
+    public Offer changeUser(User user) {
         this.user = user;
         return this;
     }

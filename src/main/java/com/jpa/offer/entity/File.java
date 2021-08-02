@@ -38,7 +38,7 @@ public class File {
         if(offer != null){ changeOffer(offer); }
     }
 
-    private File changeOffer(Offer offer) {
+    public File changeOffer(Offer offer) {
         this.offer = offer;
         return this;
     }

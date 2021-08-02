@@ -32,7 +32,7 @@ public class Answer extends BaseTimeEntity{
         if(user != null){ changeUSer(user); }
     }
 
-    private Answer changeUSer(User user) {
+    public Answer changeUSer(User user) {
         this.user = user;
         return this;
     }

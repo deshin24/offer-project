@@ -40,8 +40,8 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.title,
                         offer.content,
                         offer.serviceType,
-                        offer.company,
-                        offer.manager,
+                        offer.companyName,
+                        offer.managerName,
                         offer.phone,
                         offer.createdDate))
                .from(offer)
@@ -77,7 +77,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                 .select(Projections.fields(
                         FileResponseDto.class,
                         file.id,
-                        file.title,
+                        file.orgTitle.as("title"),
                         file.path))
                 .from(file)
                 .where(fileOfferIdEq(id))
@@ -92,8 +92,8 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.offer.title,
                         offer.content,
                         offer.serviceType,
-                        offer.company,
-                        offer.manager,
+                        offer.companyName,
+                        offer.managerName,
                         offer.phone,
                         offer.createdDate.as("offerCreatedTime"),
                         user.id.as("userId"),
@@ -130,7 +130,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         return serviceType != null ? offer.serviceType.eq(serviceType) : null;
     }
 
-    private BooleanExpression companyEq(String company) {
-        return company != null ? offer.company.eq(company) : null;
+    private BooleanExpression companyEq(String companyName) {
+        return companyName != null ? offer.companyName.eq(companyName) : null;
     }
 }

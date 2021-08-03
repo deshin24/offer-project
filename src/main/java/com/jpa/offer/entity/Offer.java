@@ -33,12 +33,12 @@ public class Offer extends BaseTimeEntity{
     private OfferServiceType serviceType;
 
     // 회사명
-    @Column(name = "offer_company", nullable = false)
-    private String company;
+    @Column(name = "offer_company_name", nullable = false)
+    private String companyName;
 
     // 담당자 명
-    @Column(name = "offer_manager", nullable = false)
-    private String manager;
+    @Column(name = "offer_manager_name", nullable = false)
+    private String managerName;
 
     // 담당자 연락처
     @Column(name = "offer_phone", nullable = false)
@@ -54,12 +54,12 @@ public class Offer extends BaseTimeEntity{
     private Answer answer;
 
     @Builder
-    public Offer(String title, String content, OfferServiceType serviceType, String company, String manager, String phone, User user, Answer answer) {
+    public Offer(String title, String content, OfferServiceType serviceType, String companyName, String managerName, String phone, User user, Answer answer) {
         this.title = title;
         this.content = content;
         this.serviceType = serviceType;
-        this.company = company;
-        this.manager = manager;
+        this.companyName = companyName;
+        this.managerName = managerName;
         this.phone = phone;
         if(user != null){ changeUser(user); }
         if(answer != null) { changeAnswer(answer); }
@@ -79,8 +79,8 @@ public class Offer extends BaseTimeEntity{
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.serviceType = requestDto.getServiceType();
-        this.company = requestDto.getCompany();
-        this.manager = requestDto.getManager();
+        this.companyName = requestDto.getCompanyName();
+        this.managerName = requestDto.getManagerName();
         this.phone = requestDto.getPhone();
         return this;
     }

@@ -18,9 +18,9 @@ public class OfferCreateRequestDto {
     @ApiModelProperty(value = "서비스 타입", required = true, example = "SNACK24")
     private OfferServiceType serviceType;
     @ApiModelProperty(value = "기업", required = true, example = "기업A")
-    private String company;
+    private String companyName;
     @ApiModelProperty(value = "담당자", required = true, example = "담당자A")
-    private String manager;
+    private String managerName;
     @ApiModelProperty(value = "전화번호", required = true, example = "010-1111-2222")
     private String phone;
 
@@ -29,8 +29,8 @@ public class OfferCreateRequestDto {
                 .title(title)
                 .content(content)
                 .serviceType(serviceType)
-                .company(company)
-                .manager(manager)
+                .companyName(companyName)
+                .managerName(managerName)
                 .phone(phone)
                 .build();
     }

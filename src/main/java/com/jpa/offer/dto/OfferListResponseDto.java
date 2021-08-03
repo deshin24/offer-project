@@ -18,8 +18,8 @@ public class OfferListResponseDto {
     private String title;
     private String content;
     private OfferServiceType serviceType;
-    private String company;
-    private String manager;
+    private String companyName;
+    private String managerName;
     private String phone;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
@@ -31,8 +31,8 @@ public class OfferListResponseDto {
         this.title = offer.getTitle();
         this.content = offer.getContent();
         this.serviceType = offer.getServiceType();
-        this.company = offer.getCompany();
-        this.manager = offer.getManager();
+        this.companyName = offer.getCompanyName();
+        this.managerName = offer.getManagerName();
         this.phone = offer.getPhone();
         this.createdTime = offer.getCreatedDate();
         this.modifiedTime = offer.getModifiedDate();

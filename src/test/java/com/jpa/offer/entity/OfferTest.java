@@ -32,8 +32,8 @@ class OfferTest {
                 .title("제안합니다")
                 .content("스낵24에 자사 제품 판매를 제안합니다.")
                 .serviceType(OfferServiceType.SNACK24)
-                .company("A회사")
-                .manager("김직원")
+                .companyName("A회사")
+                .managerName("김직원")
                 .phone("010-0000-0000")
                 .user(user)
                 .build();
@@ -46,7 +46,7 @@ class OfferTest {
         List<Offer> offers = em.createQuery("select o from Offer o", Offer.class).getResultList();
 
         // then
-        Assertions.assertThat(offers.get(0).getCompany()).isEqualTo("A회사");
+        Assertions.assertThat(offers.get(0).getCompanyName()).isEqualTo("A회사");
         Assertions.assertThat(offers.get(0).getUser().getName()).isEqualTo("회원1");
     }
 

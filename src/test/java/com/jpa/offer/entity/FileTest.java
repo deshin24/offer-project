@@ -32,8 +32,8 @@ class FileTest {
                 .title("제안합니다")
                 .content("스낵24에 자사 제품 판매를 제안합니다.")
                 .serviceType(OfferServiceType.SNACK24)
-                .company("A회사")
-                .manager("김직원")
+                .companyName("A회사")
+                .managerName("김직원")
                 .phone("010-0000-0000")
                 .user(user)
                 .build();
@@ -41,13 +41,13 @@ class FileTest {
 
         // 파일 생성
         File file1 = File.builder()
-                .title("이미지1.jpg")
+                .orgTitle("이미지1.jpg")
                 .path("이미지1 경로 ~ ")
                 .offer(offer)
                 .build();
 
         File file2 = File.builder()
-                .title("이미지2.jpg")
+                .orgTitle("이미지2.jpg")
                 .path("이미지2 경로 ~ ")
                 .offer(offer)
                 .build();

@@ -45,7 +45,8 @@ public class OfferController {
      * @param pageable
      * @return
      */
-    @ApiOperation(value = "목록 조회")
+    @ApiOperation(value = "목록 조회",
+                  notes = "제안글 목록을 날짜 내림차순으로 정렬하여 조회합니다.")
     @GetMapping(value = "/")
     public ResponseEntity list(SearchCondition condition, Pageable pageable){
         return new ResponseEntity(offerService.search(condition, pageable), HttpStatus.OK);
@@ -71,11 +72,13 @@ public class OfferController {
      * @return
      */
     @ApiOperation(value = "제안 수정",
-                  notes = "제안 내용을 수정 합니)"  )
+                  notes = "제안 내용을 수정 합니다."  )
     @PutMapping(value = "/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody OfferUpdateRequestDto offerUpdateRequestDto){
         return new ResponseEntity(offerService.update(id, offerUpdateRequestDto), HttpStatus.OK);
     }
+
+
 
 
 

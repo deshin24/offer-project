@@ -16,7 +16,7 @@ public class Offer extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "offer_id")
-    private Long Id;
+    private Long id;
 
     // 제안 제목
     @Column(name = "offer_title", nullable = false)

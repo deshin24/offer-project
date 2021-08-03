@@ -16,7 +16,7 @@ public class Answer extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
-    private Long Id;
+    private Long id;
 
     // 답변 내용
     @Column(name = "answer_content", columnDefinition = "TEXT" , nullable = false)

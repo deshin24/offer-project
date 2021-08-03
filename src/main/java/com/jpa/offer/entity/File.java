@@ -4,9 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-
 
 @Getter
 @Entity
@@ -18,28 +16,28 @@ public class File {
     @Column(name = "file_id")
     private Long id;
 
-    // 파일명
-    @Column(name = "file_title", length = 50, nullable = false)
-    private String title;
+    // 원본 파일명
+    @Column(name = "file_org_title", length = 50)
+    private String orgTitle;
+
+    // aws s3 버킷에 저장하는 파일명
+    @Column(name = "file_aws_title")
+    private String awsTitle;
 
     // 파일 경로
     @Column(name = "file_path", columnDefinition = "TEXT")
     private String path;
 
-    // 파일 aws s3 버킷 경로
-    @Column(name = "file_awsPath", columnDefinition = "TEXT")
-    private String awsPath;
-
     // 연관관계 주인
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "offer_id" )
     private Offer offer;
 
     @Builder
-    public File(String title, String path, String awsPath, Offer offer) {
-        this.title = title;
+    public File(String orgTitle, String awsTitle, String path, Offer offer) {
+        this.orgTitle = orgTitle;
+        this.awsTitle = awsTitle;
         this.path = path;
-        this.awsPath = awsPath;
         if(offer != null){ changeOffer(offer); }
     }
 

@@ -7,15 +7,15 @@ import lombok.Setter;
 @Getter @Setter
 public class FileRequestDto {
 
-    private String title;
+    private String orgTitle;
+    private String awsTitle;
     private String path;
-    private String awsPath;
 
     public File toEntity(){
         return File.builder()
-                .title(title)
+                .orgTitle(orgTitle)
+                .awsTitle(awsTitle)
                 .path(path)
-                .awsPath(awsPath)
                 .build();
     }
 

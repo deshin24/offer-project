@@ -1,8 +1,10 @@
 package com.jpa.offer.repository;
 
+import com.jpa.offer.dto.FileResponseDto;
+import com.jpa.offer.dto.OfferDetailResponseDto;
 import com.jpa.offer.dto.OfferListResponseDto;
 import com.jpa.offer.dto.SearchCondition;
-import com.jpa.offer.entity.OfferServiceType;
+import com.jpa.offer.entity.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -15,7 +17,10 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
+import static com.jpa.offer.entity.QAnswer.answer;
+import static com.jpa.offer.entity.QFile.file;
 import static com.jpa.offer.entity.QOffer.offer;
+import static com.jpa.offer.entity.QUser.user;
 
 public class OfferRepositoryImpl implements OfferRepositoryCustom{
 
@@ -55,6 +60,62 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
        long total = results.getTotal();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public OfferDetailResponseDto detail(Long id) {
+
+        OfferDetailResponseDto result = getOfferDetailResponseDto(id);
+        List<FileResponseDto> files = getFileResponseDtos(id);
+        if(files.size() > 0) result.setFiles(files);
+
+        return result;
+    }
+
+    private List<FileResponseDto> getFileResponseDtos(Long id) {
+        return queryFactory
+                .select(Projections.fields(
+                        FileResponseDto.class,
+                        file.id,
+                        file.title,
+                        file.path))
+                .from(file)
+                .where(fileOfferIdEq(id))
+                .fetchResults().getResults();
+    }
+
+    private OfferDetailResponseDto getOfferDetailResponseDto(Long id) {
+        return queryFactory
+                .select(Projections.fields(
+                        OfferDetailResponseDto.class,
+                        offer.id.as("offerId"),
+                        offer.offer.title,
+                        offer.content,
+                        offer.serviceType,
+                        offer.company,
+                        offer.manager,
+                        offer.phone,
+                        offer.createdDate.as("offerCreatedTime"),
+                        user.id.as("userId"),
+                        user.name.as("userName"),
+                        user.email.as("userEmail"),
+                        user.role,
+                        answer.id.as("answerId"),
+                        answer.content.as("answerContent"),
+                        answer.createdDate.as("answerCreatedTime")))
+                .from(offer)
+                .innerJoin(offer.user(), user)
+                .leftJoin(offer.answer(), answer)
+                .where(offerIdEq(id))
+                .fetchOne();
+    }
+
+    private BooleanExpression fileOfferIdEq(Long id) {
+        return id != null ? file.offer().id.eq(id) : null;
+    }
+
+    private BooleanExpression offerIdEq(Long id) {
+        return id != null ? offer.id.eq(id) : null;
     }
 
     private BooleanExpression titleLike(String title) {

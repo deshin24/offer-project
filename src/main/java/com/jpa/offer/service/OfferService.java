@@ -98,4 +98,19 @@ public class OfferService {
 
         return offer.update(offerUpdateRequestDto).getId();
     }
+
+    @Transactional
+    public Long delete(Long id){
+        Long offerId = offerRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다.")).getId();
+
+        // file 삭제
+        fileService.deleteList(offerId);
+
+        // offer 삭제
+        offerRepository.deleteById(offerId);
+
+        return offerId;
+    }
+
 }

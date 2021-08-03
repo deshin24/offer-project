@@ -84,4 +84,13 @@ public class OfferController {
         return new ResponseEntity(offerService.update(id, offerUpdateRequestDto, files), HttpStatus.OK);
     }
 
+    /**
+     * 제안 삭제
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        return new ResponseEntity(offerService.delete(id), HttpStatus.OK);
+    }
 }

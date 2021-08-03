@@ -1,10 +1,11 @@
 package com.jpa.offer.controller;
 
 import com.jpa.offer.dto.OfferRequestDto;
-import com.jpa.offer.service.FileService;
+import com.jpa.offer.dto.SearchCondition;
 import com.jpa.offer.service.OfferService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,6 @@ import java.util.List;
 public class OfferController {
 
     private final OfferService offerService;
-    private final FileService fileService;
 
     /**
      * 제안글 등록
@@ -36,6 +36,18 @@ public class OfferController {
         if(file1 != null) files.add(file1);
         if(file2 != null) files.add(file2);
         return new ResponseEntity(offerService.create(offerRequestDto, files), HttpStatus.CREATED);
+    }
+
+    /**
+     * 목록 조회 (+검색)
+     * @param condition
+     * @param pageable
+     * @return
+     */
+    @ApiOperation(value = "목록 조회")
+    @GetMapping(value = "/")
+    public ResponseEntity list(SearchCondition condition, Pageable pageable){
+        return new ResponseEntity(offerService.search(condition, pageable), HttpStatus.OK);
     }
 
 }

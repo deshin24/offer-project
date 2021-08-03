@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class OfferRequestDto {
+public class OfferCreateRequestDto {
 
     @ApiModelProperty(value = "유저키", required = true, example = "1")
     private Long userId;

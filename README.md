@@ -45,14 +45,14 @@
 
 | URL               | 실행 작업     | Method Type | Request      | Response     |
 |:------------------|:------------|:------------|:-------------|:-------------|
-| /offer/list       | 목록 조회(+ 검색)| GET | SearchCondition | List<OfferResponseDto> |
-| /offer/           | 제안글 등록 | POST | OfferCreateRequestDto |       |
+| /offer/           | 제안글 등록   | POST | OfferCreateRequestDto |       |
+| /offer/           | 목록 조회(+검색)| GET | SearchCondition | Page<OfferListResponseDto> |
+| /offer/{offerId}  | 제안글 상세(+답변상세) | GET | offertId | OfferDetailResponseDto |
 | /offer/{offerId}  | 제안글 수정 | PUT  | OfferUpdateRequestDto, offerId |       |
 | /offer/{offerId}  | 제안글 삭제 | DELETE | offerId |       |
-| /offer/{offerId}  | 제안글 상세(+답변상세) | GET | offertId | OfferResponseDto |
-| /answer/{offerId} | 답변 등록 | POST | AnswerCreateDto |       |
-| /answer/{answerId}| 답변 수정 | PUT  | AnswerUpdateDto,answerId |       |
-| /answer/{answerId}| 답변 삭제 | DELETE | answerId |       |
+| /answer/{offerId} | 답변 등록  | POST | AnswerCreateDto |       |
+| /answer/{answerId}| 답변 수정  | PUT  | AnswerUpdateDto,answerId |       |
+| /answer/{answerId}| 답변 삭제  | DELETE | answerId |       |
 
 
 ---
@@ -62,7 +62,7 @@
 - 사용자 (User)  - 일반, 관리자 ROLE로 분리
 - 제안 (Offer)
 - 답변 (Answer)
-- 파일 ( File )
+- 파일 (File)
 
 ---
 

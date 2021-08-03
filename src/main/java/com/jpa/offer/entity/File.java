@@ -26,15 +26,20 @@ public class File {
     @Column(name = "file_path", columnDefinition = "TEXT")
     private String path;
 
+    // 파일 aws s3 버킷 경로
+    @Column(name = "file_awsPath", columnDefinition = "TEXT")
+    private String awsPath;
+
     // 연관관계 주인
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id" )
     private Offer offer;
 
     @Builder
-    public File(String title, String path, Offer offer) {
+    public File(String title, String path, String awsPath, Offer offer) {
         this.title = title;
         this.path = path;
+        this.awsPath = awsPath;
         if(offer != null){ changeOffer(offer); }
     }
 

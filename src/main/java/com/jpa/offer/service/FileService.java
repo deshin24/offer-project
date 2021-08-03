@@ -28,8 +28,9 @@ public class FileService {
         for(MultipartFile file : files){
             FileRequestDto fileRequestDto = new FileRequestDto();
             String filePath = s3Service.upload(file);
-            fileRequestDto.setPath(filePath);
             fileRequestDto.setTitle(file.getOriginalFilename());
+            fileRequestDto.setPath("https://" + s3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + file.getOriginalFilename());
+            fileRequestDto.setAwsPath(filePath);
             fileRepository.save(fileRequestDto.toEntity().changeOffer(offer));
         }
     }

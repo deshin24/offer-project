@@ -9,11 +9,13 @@ public class FileRequestDto {
 
     private String title;
     private String path;
+    private String awsPath;
 
     public File toEntity(){
         return File.builder()
                 .title(title)
                 .path(path)
+                .awsPath(awsPath)
                 .build();
     }
 

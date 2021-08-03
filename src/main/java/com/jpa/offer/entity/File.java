@@ -29,7 +29,7 @@ public class File {
     private String path;
 
     // 연관관계 주인
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "offer_id" )
     private Offer offer;
 

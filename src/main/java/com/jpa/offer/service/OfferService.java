@@ -1,8 +1,10 @@
 package com.jpa.offer.service;
 
 import com.jpa.offer.dto.*;
+import com.jpa.offer.entity.File;
 import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.User;
+import com.jpa.offer.repository.FileRepository;
 import com.jpa.offer.repository.OfferRepository;
 import com.jpa.offer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
     private final FileService fileService;
+    private final FileRepository fileRepository;
 
     /**
      * 게시글 등록
@@ -77,9 +80,21 @@ public class OfferService {
      * @return
      */
     @Transactional
-    public Long update(Long id, OfferUpdateRequestDto offerUpdateRequestDto) {
+    public Long update(Long id, OfferUpdateRequestDto offerUpdateRequestDto, List<MultipartFile> files) throws IOException {
         Offer offer = offerRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("해당 제안을 찾을 수 없습니다."));
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
+
+       // 파일 삭제 플래그가 Y인 경우에는 기존 파일 삭제
+        List<FileDelRequestDto> fileDelYns = offerUpdateRequestDto.getFileDelYns();
+        if(fileDelYns.size() > 0 ){
+            for(FileDelRequestDto dto : fileDelYns){
+                File file = fileRepository.findById(dto.getId())
+                        .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 파일 입니다."));
+                fileService.delete(file);
+            }
+        }
+
+        if(files.size() > 0) fileService.saveList(offer, files);
 
         return offer.update(offerUpdateRequestDto).getId();
     }

@@ -24,11 +24,11 @@ public class OfferController {
     private final OfferService offerService;
 
     /**
-     * 제안글 등록
+성     * 제안 등록
      * @param offerRequestDto
      * @return
      */
-    @ApiOperation(value = "제안글 등록")
+    @ApiOperation(value = "제안 등록")
     @PostMapping(value = "/", produces = "application/json; charset=UTF-8")
     public ResponseEntity create(OfferCreateRequestDto offerRequestDto,
                                  @RequestPart(value = "file1", required = false) MultipartFile file1,
@@ -66,7 +66,7 @@ public class OfferController {
 
 
     /**
-     * 제안글 수정
+     * 제안 수정
      * @param id
      * @param offerUpdateRequestDto
      * @return
@@ -74,12 +74,14 @@ public class OfferController {
     @ApiOperation(value = "제안 수정",
                   notes = "제안 내용을 수정 합니다."  )
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody OfferUpdateRequestDto offerUpdateRequestDto){
-        return new ResponseEntity(offerService.update(id, offerUpdateRequestDto), HttpStatus.OK);
+    public ResponseEntity update(@PathVariable Long id,
+                                 OfferUpdateRequestDto offerUpdateRequestDto,
+                                 @RequestPart(value = "file1", required = false) MultipartFile file1,
+                                 @RequestPart(value = "file2", required = false) MultipartFile file2) throws IOException {
+        List<MultipartFile> files = new ArrayList<>();
+        if(file1 != null) files.add(file1);
+        if(file2 != null) files.add(file2);
+        return new ResponseEntity(offerService.update(id, offerUpdateRequestDto, files), HttpStatus.OK);
     }
-
-
-
-
 
 }

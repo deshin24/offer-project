@@ -29,10 +29,10 @@ public class Answer extends BaseTimeEntity{
     @Builder
     public Answer(String content, User user) {
         this.content = content;
-        if(user != null){ changeUSer(user); }
+        if(user != null){ changeUser(user); }
     }
 
-    public Answer changeUSer(User user) {
+    public Answer changeUser(User user) {
         this.user = user;
         return this;
     }

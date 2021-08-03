@@ -50,4 +50,17 @@ public class OfferController {
         return new ResponseEntity(offerService.search(condition, pageable), HttpStatus.OK);
     }
 
+    /**
+     * 상세 조회
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "상세 조회",
+                  notes = "제안 상세 내용을 조회합니다.( 제안내용(+첨부한 파일), 답변내용, 등록자정보 확인 가능 )"  )
+    @GetMapping(value = "/{id}")
+    public ResponseEntity detail(@PathVariable Long id){
+        return new ResponseEntity(offerService.detail(id), HttpStatus.OK);
+    }
+
+
 }

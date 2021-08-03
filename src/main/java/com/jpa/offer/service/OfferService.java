@@ -53,4 +53,8 @@ public class OfferService {
     public Page<OfferListResponseDto> search(SearchCondition condition, Pageable pageable) {
         return offerRepository.search(condition, pageable);
     }
+
+    public OfferDetailResponseDto detail(Long id) {
+        return offerRepository.detail(id);
+    }
 }

@@ -1,5 +1,6 @@
 package com.jpa.offer.entity;
 
+import com.jpa.offer.dto.OfferUpdateRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,6 +72,16 @@ public class Offer extends BaseTimeEntity{
 
     public Offer changeUser(User user) {
         this.user = user;
+        return this;
+    }
+
+    public Offer update(OfferUpdateRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.serviceType = requestDto.getServiceType();
+        this.company = requestDto.getCompany();
+        this.manager = requestDto.getManager();
+        this.phone = requestDto.getPhone();
         return this;
     }
 }

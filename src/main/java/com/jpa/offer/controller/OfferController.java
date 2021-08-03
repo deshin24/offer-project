@@ -1,6 +1,7 @@
 package com.jpa.offer.controller;
 
-import com.jpa.offer.dto.OfferRequestDto;
+import com.jpa.offer.dto.OfferCreateRequestDto;
+import com.jpa.offer.dto.OfferUpdateRequestDto;
 import com.jpa.offer.dto.SearchCondition;
 import com.jpa.offer.service.OfferService;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +30,7 @@ public class OfferController {
      */
     @ApiOperation(value = "제안글 등록")
     @PostMapping(value = "/", produces = "application/json; charset=UTF-8")
-    public ResponseEntity create(OfferRequestDto offerRequestDto,
+    public ResponseEntity create(OfferCreateRequestDto offerRequestDto,
                                  @RequestPart(value = "file1", required = false) MultipartFile file1,
                                  @RequestPart(value = "file2", required = false) MultipartFile file2) throws IOException {
         List<MultipartFile> files = new ArrayList<>();
@@ -61,6 +62,21 @@ public class OfferController {
     public ResponseEntity detail(@PathVariable Long id){
         return new ResponseEntity(offerService.detail(id), HttpStatus.OK);
     }
+
+
+    /**
+     * 제안글 수정
+     * @param id
+     * @param offerUpdateRequestDto
+     * @return
+     */
+    @ApiOperation(value = "제안 수정",
+                  notes = "제안 내용을 수정 합니)"  )
+    @PutMapping(value = "/{id}")
+    public ResponseEntity update(@PathVariable Long id, @RequestBody OfferUpdateRequestDto offerUpdateRequestDto){
+        return new ResponseEntity(offerService.update(id, offerUpdateRequestDto), HttpStatus.OK);
+    }
+
 
 
 }

@@ -1,9 +1,6 @@
 package com.jpa.offer.service;
 
-import com.jpa.offer.dto.OfferListResponseDto;
-import com.jpa.offer.dto.OfferRequestDto;
-import com.jpa.offer.dto.OfferDetailResponseDto;
-import com.jpa.offer.dto.SearchCondition;
+import com.jpa.offer.dto.*;
 import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.User;
 import com.jpa.offer.repository.OfferRepository;
@@ -34,7 +31,7 @@ public class OfferService {
      * @return
      */
     @Transactional
-    public Long create(OfferRequestDto offerRequestDto, List<MultipartFile> files) throws IOException {
+    public Long create(OfferCreateRequestDto offerRequestDto, List<MultipartFile> files) throws IOException {
         User user = userRepository.findById(offerRequestDto.getUserId())
                 .orElseThrow( () ->new EntityNotFoundException("존재하지 않는 사용자 입니다."));
 
@@ -45,16 +42,45 @@ public class OfferService {
         return offer.getId();
     }
 
+    /**
+     * 전체 리스트
+     * @return
+     */
     public List<OfferListResponseDto> list() {
         return offerRepository.findAll().stream()
                 .map(OfferListResponseDto::new).collect(Collectors.toList());
     }
 
+    /**
+     * 목록 조회 (+검색)
+     * @param condition
+     * @param pageable
+     * @return
+     */
     public Page<OfferListResponseDto> search(SearchCondition condition, Pageable pageable) {
         return offerRepository.search(condition, pageable);
     }
 
+    /**
+     * 상세 조회
+     * @param id
+     * @return
+     */
     public OfferDetailResponseDto detail(Long id) {
         return offerRepository.detail(id);
+    }
+
+    /**
+     * 제안글 수정
+     * @param id
+     * @param offerUpdateRequestDto
+     * @return
+     */
+    @Transactional
+    public Long update(Long id, OfferUpdateRequestDto offerUpdateRequestDto) {
+        Offer offer = offerRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("해당 제안을 찾을 수 없습니다."));
+
+        return offer.update(offerUpdateRequestDto).getId();
     }
 }

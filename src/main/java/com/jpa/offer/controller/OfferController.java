@@ -72,7 +72,7 @@ public class OfferController {
      * @return
      */
     @ApiOperation(value = "제안 수정",
-                  notes = "제안 내용을 수정 합니다."  )
+                  notes = "제안 내용을 수정 합니다." )
     @PutMapping(value = "/{id}")
     public ResponseEntity update(@PathVariable Long id,
                                  OfferUpdateRequestDto offerUpdateRequestDto,
@@ -89,6 +89,8 @@ public class OfferController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "제안 삭제",
+                  notes = "제안을 삭제합니다" )
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable Long id){
         return new ResponseEntity(offerService.delete(id), HttpStatus.OK);

@@ -30,7 +30,7 @@ class AnswerRepositoryTest {
 
 
     /**
-     * 답변 저장 테스트
+     * 답변 등록 테스트
      */
     @Test
     public void answerCreateTest(){

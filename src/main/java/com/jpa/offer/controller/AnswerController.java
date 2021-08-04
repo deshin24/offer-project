@@ -30,7 +30,6 @@ public class AnswerController {
         return new ResponseEntity(answerService.create(offerId, answerCreateRequestDto), HttpStatus.CREATED);
     }
 
-
     /**
      * 답변 수정
      * @param answerId
@@ -44,4 +43,18 @@ public class AnswerController {
                                  @RequestBody AnswerUpdateRequestDto answerUpdateRequestDto){
         return new ResponseEntity(answerService.update(answerId, answerUpdateRequestDto), HttpStatus.OK);
     }
+
+    /**
+     * 답변 삭제
+     * @param offerId
+     * @param answerId
+     * @return
+     */
+    @ApiOperation(value = "답변 삭제",
+                  notes = "답변을 삭제합니다." )
+    @DeleteMapping("/{offerId}/{answerId}")
+    public ResponseEntity delete(@PathVariable Long offerId, @PathVariable Long answerId){
+        return new ResponseEntity(answerService.delete(offerId, answerId), HttpStatus.OK);
+    }
+
 }

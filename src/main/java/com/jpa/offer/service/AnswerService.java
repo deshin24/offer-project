@@ -44,6 +44,12 @@ public class AnswerService {
         return answer.getId();
     }
 
+    /**
+     * 답변 수정
+     * @param answerId
+     * @param answerUpdateRequestDto
+     * @return
+     */
     @Transactional
     public Long update(Long answerId, AnswerUpdateRequestDto answerUpdateRequestDto) {
         Answer answer= answerRepository.findById(answerId)
@@ -52,5 +58,25 @@ public class AnswerService {
         answer.update(answerUpdateRequestDto);
 
         return answer.getId();
+    }
+
+    /**
+     * 답변 삭제
+     * @param offerId
+     * @param answerId
+     * @return
+     */
+    @Transactional
+    public Long delete(Long offerId, Long answerId) {
+        Offer offer = offerRepository.findById(offerId)
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
+        offer.changeAnswer(null);
+
+        Long id = answerRepository.findById(answerId)
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 답변입니다.")).getId();
+
+        answerRepository.deleteById(answerId);
+
+        return id;
     }
 }

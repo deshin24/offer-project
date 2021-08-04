@@ -1,7 +1,9 @@
 package com.jpa.offer.repository;
 
 import com.jpa.offer.dto.OfferDetailResponseDto;
+import com.jpa.offer.dto.OfferListResponseDto;
 import com.jpa.offer.dto.OfferUpdateRequestDto;
+import com.jpa.offer.dto.SearchCondition;
 import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.OfferServiceType;
 import com.jpa.offer.entity.Role;
@@ -10,6 +12,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -27,7 +32,7 @@ public class OfferRepositoryTest {
     OfferRepository offerRepository;
 
     /**
-     * 제안 등 테스트
+     * 제안 등록 테스트
      */
     @Test
     public void createOfferTest() {
@@ -207,4 +212,55 @@ public class OfferRepositoryTest {
         Assertions.assertThat(offerRepository.findById(offerId)).isEmpty();
     }
 
+    /**
+     * 제안 검색 리스트 테스트
+     */
+    @Test
+    public void offerSearchTest(){
+        // given
+        // 회원 생성
+        User user = User.builder()
+                .name("회원1")
+                .email("user1@email.com")
+                .role(Role.ADMIN)
+                .build();
+        userRepository.save(user);
+
+        // 제안 생성
+        Offer offer1 = Offer.builder()
+                .title("제안합니다1")
+                .content("스낵24에 자사 제품 판매를 제안합니다.")
+                .serviceType(OfferServiceType.SNACK24)
+                .companyName("A회사")
+                .managerName("김직원")
+                .phone("010-0000-0000")
+                .user(user)
+                .build();
+
+        Offer offer2 = Offer.builder()
+                .title("제안합니다2")
+                .content("생일24에 자사 제품 판매를 제안합니다.")
+                .serviceType(OfferServiceType.BIRTH24)
+                .companyName("A회사")
+                .managerName("김직원")
+                .phone("010-0000-0000")
+                .user(user)
+                .build();
+        offerRepository.save(offer1);
+        offerRepository.save(offer2);
+
+        // when
+        SearchCondition searchCondition = new SearchCondition();
+        //searchCondition.setCompany("A회사");
+        searchCondition.setServiceType(OfferServiceType.BIRTH24);
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<OfferListResponseDto> listResponseDtos = offerRepository.search(searchCondition, pageable);
+
+        // then
+        //Assertions.assertThat(listResponseDtos.getTotalElements()).isEqualTo(2);
+        Assertions.assertThat(listResponseDtos.getTotalElements()).isEqualTo(1);
+        Assertions.assertThat(listResponseDtos.getTotalPages()).isEqualTo(1);
+    }
 }

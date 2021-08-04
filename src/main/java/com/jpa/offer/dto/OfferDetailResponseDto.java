@@ -22,10 +22,10 @@ public class OfferDetailResponseDto {
     private String companyName;
     private String managerName;
     private String phone;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime offerCreatedTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime offerModifiedTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime offerCreatedDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime offerModifiedDate;
 
     private List<FileResponseDto> files;
 
@@ -36,10 +36,10 @@ public class OfferDetailResponseDto {
 
     private Long answerId;
     private String answerContent;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime answerCreatedTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime answerModifiedTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime answerCreatedDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime answerModifiedDate;
 
 
     public OfferDetailResponseDto(Offer offer) {
@@ -50,8 +50,8 @@ public class OfferDetailResponseDto {
         this.companyName = offer.getCompanyName();
         this.managerName = offer.getManagerName();
         this.phone = offer.getPhone();
-        this.offerCreatedTime = offer.getCreatedDate();
-        this.offerModifiedTime = offer.getModifiedDate();
+        this.offerCreatedDate = offer.getCreatedDate();
+        this.offerModifiedDate = offer.getModifiedDate();
 
         this.userId = offer.getUser().getId();
         this.userName = offer.getUser().getName();
@@ -60,8 +60,8 @@ public class OfferDetailResponseDto {
 
         this.answerId = offer.getAnswer().getId();
         this.answerContent = offer.getAnswer().getContent();
-        this.answerCreatedTime = offer.getAnswer().getCreatedDate();
-        this.answerModifiedTime = offer.getAnswer().getModifiedDate();
+        this.answerCreatedDate = offer.getAnswer().getCreatedDate();
+        this.answerModifiedDate = offer.getAnswer().getModifiedDate();
 
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -30,6 +31,7 @@ public class Answer extends BaseTimeEntity{
     @Builder
     public Answer(String content, User user) {
         this.content = content;
+        this.createdDate = LocalDateTime.now();
         if(user != null){ changeUser(user); }
     }
 
@@ -40,6 +42,7 @@ public class Answer extends BaseTimeEntity{
 
     public Answer update(AnswerUpdateRequestDto requestDto){
         this.content = requestDto.getContent();
+        this.modifiedDate = LocalDateTime.now();
         return this;
     }
 }

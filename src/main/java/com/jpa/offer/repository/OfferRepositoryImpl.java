@@ -96,13 +96,15 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.managerName,
                         offer.phone,
                         offer.createdDate.as("offerCreatedTime"),
+                        offer.modifiedDate.as("offerModifiedTime"),
                         user.id.as("userId"),
                         user.name.as("userName"),
                         user.email.as("userEmail"),
                         user.role,
                         answer.id.as("answerId"),
                         answer.content.as("answerContent"),
-                        answer.createdDate.as("answerCreatedTime")))
+                        answer.createdDate.as("answerCreatedTime"),
+                        answer.modifiedDate.as("answerModifiedTime")))
                 .from(offer)
                 .innerJoin(offer.user(), user)
                 .leftJoin(offer.answer(), answer)

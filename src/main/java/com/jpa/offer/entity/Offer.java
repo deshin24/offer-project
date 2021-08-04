@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -61,6 +62,7 @@ public class Offer extends BaseTimeEntity{
         this.companyName = companyName;
         this.managerName = managerName;
         this.phone = phone;
+        this.createdDate = LocalDateTime.now();
         if(user != null){ changeUser(user); }
         if(answer != null) { changeAnswer(answer); }
     }
@@ -82,6 +84,7 @@ public class Offer extends BaseTimeEntity{
         this.companyName = requestDto.getCompanyName();
         this.managerName = requestDto.getManagerName();
         this.phone = requestDto.getPhone();
+        this.modifiedDate = LocalDateTime.now();
         return this;
     }
 }

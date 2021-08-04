@@ -30,8 +30,20 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         this.queryFactory = new JPAQueryFactory(em);
     }
 
+    /**
+     * 제안글 검색 리스트 (+페이징)
+     * @param condition
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<OfferListResponseDto> search(SearchCondition condition, Pageable pageable) {
+
+        String searchKeyword = condition.getSearchKeyword();
+        Long offerId = null;
+        if(searchKeyword.matches("[+-]?\\d*(\\.\\d+)?")){
+            offerId = Long.parseLong(searchKeyword);
+        }
 
        QueryResults<OfferListResponseDto> results = queryFactory
                 .select(Projections.fields(
@@ -46,10 +58,10 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.createdDate))
                .from(offer)
                .where(
-                       titleLike(condition.getTitle()),
-                       contentLike(condition.getContent()),
-                       serviceTypeEq(condition.getServiceType()),
-                       companyEq(condition.getCompany()))
+                       titleLike(searchKeyword).or(
+                               contentLike(searchKeyword).or(
+                                       companyEq(searchKeyword).or(offerIdEq(offerId)))),
+                       serviceTypeEq(condition.getServiceType()))
                .orderBy(
                        offer.createdDate.desc())
                .offset(pageable.getOffset())
@@ -62,6 +74,11 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         return new PageImpl<>(content, pageable, total);
     }
 
+    /**
+     * 제안글 상세 (+회원정보, 답변정보)
+     * @param id
+     * @return
+     */
     @Override
     public OfferDetailResponseDto detail(Long id) {
 
@@ -72,6 +89,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         return result;
     }
 
+    // 해당 제안글의 파일 리스트
     private List<FileResponseDto> getFileResponseDtos(Long id) {
         return queryFactory
                 .select(Projections.fields(
@@ -95,16 +113,16 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.companyName,
                         offer.managerName,
                         offer.phone,
-                        offer.createdDate.as("offerCreatedTime"),
-                        offer.modifiedDate.as("offerModifiedTime"),
+                        offer.createdDate.as("offerCreatedDate"),
+                        offer.modifiedDate.as("offerModifiedDate"),
                         user.id.as("userId"),
                         user.name.as("userName"),
                         user.email.as("userEmail"),
                         user.role,
                         answer.id.as("answerId"),
                         answer.content.as("answerContent"),
-                        answer.createdDate.as("answerCreatedTime"),
-                        answer.modifiedDate.as("answerModifiedTime")))
+                        answer.createdDate.as("answerCreatedDate"),
+                        answer.modifiedDate.as("answerModifiedDate")))
                 .from(offer)
                 .innerJoin(offer.user(), user)
                 .leftJoin(offer.answer(), answer)

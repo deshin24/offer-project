@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +27,12 @@ public class AnswerService {
      * @param answerCreateRequestDto
      * @return
      */
+    @Transactional
     public Long create(Long offerId, AnswerCreateRequestDto answerCreateRequestDto) {
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
+
+        if(offer.getAnswer() != null) throw new IllegalArgumentException("이미 답변이 완료된 제안글입니다.");
 
         User user = userRepository.findById(answerCreateRequestDto.getUserId())
                 .orElseThrow( () ->new EntityNotFoundException("존재하지 않는 사용자 입니다."));

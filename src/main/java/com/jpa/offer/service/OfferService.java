@@ -29,7 +29,7 @@ public class OfferService {
     private final FileRepository fileRepository;
 
     /**
-     * 게시글 등록
+     * 제안 등록
      * @param offerRequestDto
      * @return
      */
@@ -74,7 +74,7 @@ public class OfferService {
     }
 
     /**
-     * 제안글 수정
+     * 제안 수정
      * @param id
      * @param offerUpdateRequestDto
      * @return
@@ -99,6 +99,11 @@ public class OfferService {
         return offer.update(offerUpdateRequestDto).getId();
     }
 
+    /**
+     * 제안 삭제
+     * @param id
+     * @return
+     */
     @Transactional
     public Long delete(Long id){
         Long offerId = offerRepository.findById(id)

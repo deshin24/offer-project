@@ -1,6 +1,7 @@
 package com.jpa.offer.service;
 
 import com.jpa.offer.dto.AnswerCreateRequestDto;
+import com.jpa.offer.dto.AnswerUpdateRequestDto;
 import com.jpa.offer.entity.Answer;
 import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.User;
@@ -39,6 +40,16 @@ public class AnswerService {
 
         Answer answer = answerRepository.save(answerCreateRequestDto.toEntity().changeUser(user));
         offer.changeAnswer(answer);
+
+        return answer.getId();
+    }
+
+    @Transactional
+    public Long update(Long answerId, AnswerUpdateRequestDto answerUpdateRequestDto) {
+        Answer answer= answerRepository.findById(answerId)
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 답변입니다."));
+
+        answer.update(answerUpdateRequestDto);
 
         return answer.getId();
     }

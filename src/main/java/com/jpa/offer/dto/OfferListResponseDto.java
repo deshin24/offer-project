@@ -22,9 +22,9 @@ public class OfferListResponseDto {
     private String managerName;
     private String phone;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime createdTime;
+    private LocalDateTime createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime modifiedTime;
+    private LocalDateTime modifiedDate;
 
     public OfferListResponseDto(Offer offer) {
         this.id = offer.getId();
@@ -34,8 +34,8 @@ public class OfferListResponseDto {
         this.companyName = offer.getCompanyName();
         this.managerName = offer.getManagerName();
         this.phone = offer.getPhone();
-        this.createdTime = offer.getCreatedDate();
-        this.modifiedTime = offer.getModifiedDate();
+        this.createdDate = offer.getCreatedDate();
+        this.modifiedDate = offer.getModifiedDate();
     }
 
 }

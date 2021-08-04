@@ -5,6 +5,7 @@ import com.jpa.offer.dto.OfferDetailResponseDto;
 import com.jpa.offer.dto.OfferListResponseDto;
 import com.jpa.offer.dto.SearchCondition;
 import com.jpa.offer.entity.*;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -12,6 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 
@@ -39,10 +41,18 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
     @Override
     public Page<OfferListResponseDto> search(SearchCondition condition, Pageable pageable) {
 
-        String searchKeyword = condition.getSearchKeyword();
-        Long offerId = null;
-        if(searchKeyword.matches("[+-]?\\d*(\\.\\d+)?")){
-            offerId = Long.parseLong(searchKeyword);
+        BooleanBuilder builder = new BooleanBuilder();
+        String keyword = condition.getSearchKeyword();
+
+        if (keyword != null) {
+            if(keyword.matches("[+-]?\\d*(\\.\\d+)?")){
+                Long offerId = Long.parseLong(keyword);
+                builder.and(offer.id.eq(offerId));
+            }else{
+                builder.or(offer.title.contains(keyword));
+                builder.or(offer.content.contains(keyword));
+                builder.or(offer.companyName.eq(keyword));
+            }
         }
 
        QueryResults<OfferListResponseDto> results = queryFactory
@@ -57,11 +67,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.phone,
                         offer.createdDate))
                .from(offer)
-               .where(
-                       titleLike(searchKeyword).or(
-                               contentLike(searchKeyword).or(
-                                       companyEq(searchKeyword).or(offerIdEq(offerId)))),
-                       serviceTypeEq(condition.getServiceType()))
+               .where(builder)
                .orderBy(
                        offer.createdDate.desc())
                .offset(pageable.getOffset())
@@ -128,6 +134,14 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                 .leftJoin(offer.answer(), answer)
                 .where(offerIdEq(id))
                 .fetchOne();
+    }
+
+    private BooleanExpression searchKeywordEq(String keyword){
+        if( keyword != null ){
+
+
+        }
+        return null;
     }
 
     private BooleanExpression fileOfferIdEq(Long id) {

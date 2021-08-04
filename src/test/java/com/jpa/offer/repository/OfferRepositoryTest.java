@@ -174,4 +174,37 @@ public class OfferRepositoryTest {
         Assertions.assertThat(findOffer.getManagerName()).isEqualTo("박직원");
     }
 
+    /**
+     * 제안 삭제 테스트
+     */
+    @Test
+    public void offerDeleteTest(){
+        // given
+        // 회원 생성
+        User user = User.builder()
+                .name("회원1")
+                .email("user1@email.com")
+                .role(Role.ADMIN)
+                .build();
+        userRepository.save(user);
+
+        // 제안 생성
+        Offer offer = Offer.builder()
+                .title("제안합니다")
+                .content("스낵24에 자사 제품 판매를 제안합니다.")
+                .serviceType(OfferServiceType.SNACK24)
+                .companyName("A회사")
+                .managerName("김직원")
+                .phone("010-0000-0000")
+                .user(user)
+                .build();
+        Long offerId = offerRepository.save(offer).getId();
+
+        // when
+        offerRepository.delete(offer);
+
+        // then
+        Assertions.assertThat(offerRepository.findById(offerId)).isEmpty();
+    }
+
 }

@@ -66,22 +66,22 @@ public class OfferService {
 
     /**
      * 상세 조회
-     * @param id
+     * @param offerId
      * @return
      */
-    public OfferDetailResponseDto detail(Long id) {
-        return offerRepository.detail(id);
+    public OfferDetailResponseDto detail(Long offerId) {
+        return offerRepository.detail(offerId);
     }
 
     /**
      * 제안 수정
-     * @param id
+     * @param offerId
      * @param offerUpdateRequestDto
      * @return
      */
     @Transactional
-    public Long update(Long id, OfferUpdateRequestDto offerUpdateRequestDto, List<MultipartFile> files) throws IOException {
-        Offer offer = offerRepository.findById(id)
+    public Long update(Long offerId, OfferUpdateRequestDto offerUpdateRequestDto, List<MultipartFile> files) throws IOException {
+        Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
 
        // 파일 삭제 플래그가 Y인 경우에는 기존 파일 삭제
@@ -101,21 +101,21 @@ public class OfferService {
 
     /**
      * 제안 삭제
-     * @param id
+     * @param offerId
      * @return
      */
     @Transactional
-    public Long delete(Long id){
-        Long offerId = offerRepository.findById(id)
+    public Long delete(Long offerId){
+        Long findOfferId = offerRepository.findById(offerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다.")).getId();
 
         // file 삭제
-        fileService.deleteList(offerId);
+        fileService.deleteList(findOfferId);
 
         // offer 삭제
-        offerRepository.deleteById(offerId);
+        offerRepository.deleteById(findOfferId);
 
-        return offerId;
+        return findOfferId;
     }
 
 }

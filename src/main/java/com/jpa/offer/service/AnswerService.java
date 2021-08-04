@@ -72,11 +72,11 @@ public class AnswerService {
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
         offer.changeAnswer(null);
 
-        Long id = answerRepository.findById(answerId)
+        Long findAnswerId = answerRepository.findById(answerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 답변입니다.")).getId();
 
         answerRepository.deleteById(answerId);
 
-        return id;
+        return findAnswerId;
     }
 }

@@ -3,6 +3,7 @@ package com.jpa.offer.controller;
 import com.jpa.offer.dto.AnswerCreateRequestDto;
 import com.jpa.offer.dto.AnswerUpdateRequestDto;
 import com.jpa.offer.service.AnswerService;
+import com.jpa.offer.service.UserCheckService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerController {
 
     private final AnswerService answerService;
+    private final UserCheckService userCheckService;
 
     /**
      * 답변 등록
@@ -27,6 +29,11 @@ public class AnswerController {
     @PostMapping("/{offerId}")
     public ResponseEntity create(@PathVariable Long offerId,
                                  @RequestBody AnswerCreateRequestDto answerCreateRequestDto){
+
+        if(!userCheckService.checkAdmin(answerCreateRequestDto.getUserId())){
+            return new ResponseEntity("등록 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
+        }
+
         return new ResponseEntity(answerService.create(offerId, answerCreateRequestDto), HttpStatus.CREATED);
     }
 
@@ -41,6 +48,11 @@ public class AnswerController {
     @PutMapping("/{answerId}")
     public ResponseEntity update(@PathVariable Long answerId,
                                  @RequestBody AnswerUpdateRequestDto answerUpdateRequestDto){
+
+        if(!userCheckService.hasAuth(answerUpdateRequestDto.getUserId(), null, answerId)){
+            return new ResponseEntity("수정 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
+        }
+
         return new ResponseEntity(answerService.update(answerId, answerUpdateRequestDto), HttpStatus.OK);
     }
 
@@ -52,8 +64,12 @@ public class AnswerController {
      */
     @ApiOperation(value = "답변 삭제",
                   notes = "답변을 삭제합니다." )
-    @DeleteMapping("/{offerId}/{answerId}")
-    public ResponseEntity delete(@PathVariable Long offerId, @PathVariable Long answerId){
+    @DeleteMapping("/{userId}/{offerId}/{answerId}")
+    public ResponseEntity delete(@PathVariable Long userId, @PathVariable Long offerId,
+                                 @PathVariable Long answerId){
+        if(!userCheckService.hasAuth(userId, null, answerId)){
+            return new ResponseEntity("삭제 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
+        }
         return new ResponseEntity(answerService.delete(offerId, answerId), HttpStatus.OK);
     }
 

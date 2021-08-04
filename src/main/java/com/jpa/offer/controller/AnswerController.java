@@ -2,6 +2,7 @@ package com.jpa.offer.controller;
 
 import com.jpa.offer.dto.AnswerCreateRequestDto;
 import com.jpa.offer.dto.AnswerUpdateRequestDto;
+import com.jpa.offer.dto.UserSessionDto;
 import com.jpa.offer.service.AnswerService;
 import com.jpa.offer.service.UserCheckService;
 import io.swagger.annotations.ApiOperation;
@@ -64,10 +65,10 @@ public class AnswerController {
      */
     @ApiOperation(value = "답변 삭제",
                   notes = "답변을 삭제합니다." )
-    @DeleteMapping("/{userId}/{offerId}/{answerId}")
-    public ResponseEntity delete(@PathVariable Long userId, @PathVariable Long offerId,
-                                 @PathVariable Long answerId){
-        if(!userCheckService.hasAuth(userId, null, answerId)){
+    @DeleteMapping("/{offerId}/{answerId}")
+    public ResponseEntity delete(@PathVariable Long offerId, @PathVariable Long answerId,
+                                 @RequestBody UserSessionDto userSessionDto){
+        if(!userCheckService.hasAuth(userSessionDto.getUserId(), null, answerId)){
             return new ResponseEntity("삭제 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity(answerService.delete(offerId, answerId), HttpStatus.OK);

@@ -3,6 +3,7 @@ package com.jpa.offer.controller;
 import com.jpa.offer.dto.OfferCreateRequestDto;
 import com.jpa.offer.dto.OfferUpdateRequestDto;
 import com.jpa.offer.dto.SearchCondition;
+import com.jpa.offer.dto.UserSessionDto;
 import com.jpa.offer.service.OfferService;
 import com.jpa.offer.service.UserCheckService;
 import io.swagger.annotations.ApiOperation;
@@ -106,9 +107,9 @@ public class OfferController {
      */
     @ApiOperation(value = "제안 삭제",
                   notes = "제안을 삭제합니다" )
-    @DeleteMapping(value = "/{userId}/{offerId}")
-    public ResponseEntity delete(@PathVariable Long userId, @PathVariable Long offerId){
-        if(!userCheckService.hasAuth(userId, offerId, null)){
+    @DeleteMapping(value = "/{offerId}")
+    public ResponseEntity delete(@PathVariable Long offerId, @RequestBody UserSessionDto userSessionDto){
+        if(!userCheckService.hasAuth(userSessionDto.getUserId(), offerId, null)){
             return new ResponseEntity("삭제 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity(offerService.delete(offerId), HttpStatus.OK);

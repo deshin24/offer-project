@@ -1,6 +1,7 @@
 package com.jpa.offer.repository;
 
 import com.jpa.offer.dto.OfferDetailResponseDto;
+import com.jpa.offer.dto.OfferUpdateRequestDto;
 import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.OfferServiceType;
 import com.jpa.offer.entity.Role;
@@ -103,7 +104,9 @@ public class OfferRepositoryTest {
         Assertions.assertThat(offers.get(0).getServiceType()).isEqualTo(OfferServiceType.SNACK24);
     }
 
-
+    /**
+     * 제안 상세 테스트
+     */
     @Test
     public void offerDetailTest(){
         // given
@@ -133,6 +136,42 @@ public class OfferRepositoryTest {
         // then
         Assertions.assertThat(detailResponseDto.getContent()).isEqualTo(offer.getContent());
         Assertions.assertThat(detailResponseDto.getUserName()).isEqualTo(user.getName());
+    }
+
+    /**
+     * 제안 수정 테스트
+     */
+    @Test
+    public void offerUpdateTest(){
+        // given
+        // 회원 생성
+        User user = User.builder()
+                .name("회원1")
+                .email("user1@email.com")
+                .role(Role.ADMIN)
+                .build();
+        userRepository.save(user);
+
+        // 제안 생성
+        Offer offer = Offer.builder()
+                .title("제안합니다")
+                .content("스낵24에 자사 제품 판매를 제안합니다.")
+                .serviceType(OfferServiceType.SNACK24)
+                .companyName("A회사")
+                .managerName("김직원")
+                .phone("010-0000-0000")
+                .user(user)
+                .build();
+        Long offerId = offerRepository.save(offer).getId();
+
+        // when
+        OfferUpdateRequestDto updateRequestDto = new OfferUpdateRequestDto();
+        updateRequestDto.setManagerName("박직원");
+        offer.update(updateRequestDto);
+
+        // then
+        Offer findOffer = offerRepository.findById(offerId).get();
+        Assertions.assertThat(findOffer.getManagerName()).isEqualTo("박직원");
     }
 
 }

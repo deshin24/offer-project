@@ -1,6 +1,5 @@
 package com.jpa.offer.dto;
 
-import com.jpa.offer.entity.Offer;
 import com.jpa.offer.entity.OfferServiceType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -28,6 +27,6 @@ public class OfferUpdateRequestDto {
     private String phone;
 
     @ApiModelProperty(value = "파일 삭제 여부")
-    private List<FileDelRequestDto> fileDelYns = new ArrayList<>(2);
+    private List<FileDelRequestDto> fileDelYns = new ArrayList<>();
 
 }

@@ -13,7 +13,7 @@ public class OfferCreateRequestDto {
     private Long userId;
     @ApiModelProperty(value = "제목", required = true, example = "제안합니다")
     private String title;
-    @ApiModelProperty(value = "내용", required = true, example = "자사와 ~~~ 제안합니다")
+    @ApiModelProperty(value = "내용", required = true, example = "자사 상품 판매를 제안합니다")
     private String content;
     @ApiModelProperty(value = "서비스 타입", required = true, example = "SNACK24")
     private OfferServiceType serviceType;

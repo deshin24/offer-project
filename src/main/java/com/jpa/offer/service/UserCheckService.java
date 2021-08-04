@@ -39,7 +39,7 @@ public class UserCheckService {
                     .orElseThrow(()->new EntityNotFoundException("존재하지 않는 답변입니다")).getUser().getId();
             if(Role.ADMIN.equals(role) && userId.equals(findUserId)) return true;
 
-        }else{// 제안 권한 있는지 ( ROLE_USER ), 해당 글 등록자인지 체크
+        }else if(answerId == null){// 제안 권한 있는지 ( ROLE_USER ), 해당 글 등록자인지 체크
             Long findUserId = offerRepository.findById(offerId)
                     .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글입니다.")).getUser().getId();
             if(Role.USER.equals(role) && userId.equals(findUserId)) return true;

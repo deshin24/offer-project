@@ -12,6 +12,8 @@ import java.util.List;
 @Getter @Setter
 public class OfferUpdateRequestDto {
 
+    @ApiModelProperty(value = "유저키", required = true, example = "6")
+    private Long userId;
     @ApiModelProperty(value = "제목", example = "제안합니다")
     private String title;
     @ApiModelProperty(value = "내용", example = "저희 00의 상품 판매를 제안합니다")

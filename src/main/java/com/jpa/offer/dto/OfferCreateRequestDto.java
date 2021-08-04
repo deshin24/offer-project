@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter @Setter
 public class OfferCreateRequestDto {
 
-    @ApiModelProperty(value = "유저키", required = true, example = "1")
+    @ApiModelProperty(value = "유저키", required = true, example = "6")
     private Long userId;
     @ApiModelProperty(value = "제목", required = true, example = "제안합니다")
     private String title;

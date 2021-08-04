@@ -28,15 +28,4 @@ public class OfferUpdateRequestDto {
     @ApiModelProperty(value = "파일 삭제 여부")
     private List<FileDelRequestDto> fileDelYns = new ArrayList<>(2);
 
-
-    public Offer toEntity(){
-        return Offer.builder()
-                .title(title)
-                .content(content)
-                .serviceType(serviceType)
-                .companyName(companyName)
-                .managerName(managerName)
-                .phone(phone)
-                .build();
-    }
 }

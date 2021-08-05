@@ -54,13 +54,21 @@ public class FileService {
 
     /**
      * 파일 개별 삭제
-     * @param file
+     * @param
      */
     @Transactional
-    public void delete(File file){
-        s3Service.delete(file.getAwsTitle());
-        fileRepository.deleteById(file.getId());
-    }
+    public void delete(Long offerId, Boolean isNeedFileDel1, Boolean isNeedFileDel2) {
+        List<File> files = fileRepository.findByOfferId(offerId);
+        File file1 = files.get(0);
+        File file2 = files.get(1);
 
+        if(isNeedFileDel1){
+            s3Service.delete(file1.getAwsTitle());
+            fileRepository.deleteById(file1.getId());
+        }else if(isNeedFileDel2){
+            s3Service.delete(file2.getAwsTitle());
+            fileRepository.deleteById(file2.getId());
+        }
+    }
 }
 

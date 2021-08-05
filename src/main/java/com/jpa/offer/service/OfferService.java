@@ -84,14 +84,17 @@ public class OfferService {
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
 
-       // 파일 삭제 플래그가 Y인 경우에는 기존 파일 삭제
-        List<FileDelRequestDto> fileDelYns = offerUpdateRequestDto.getFileDelYns();
-        if(fileDelYns.size() > 0 ){
-            for(FileDelRequestDto dto : fileDelYns){
-                File file = fileRepository.findById(dto.getId())
-                        .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 파일 입니다."));
-                fileService.delete(file);
-            }
+        List<File> findFiles = fileRepository.findByOfferId(offerId);
+        int totalFile = findFiles.size();
+        if(offerUpdateRequestDto.getIsNeedFileDel1()) totalFile -= 1;
+        if(offerUpdateRequestDto.getIsNeedFileDel2()) totalFile -= 1;
+        totalFile += files.size();
+        if( totalFile > 2 ) {
+             throw new IllegalArgumentException("2개 이상의 파일을 저장할 수 없습니다.");
+        }
+
+        if(offerUpdateRequestDto.getIsNeedFileDel1() || offerUpdateRequestDto.getIsNeedFileDel2()){
+            fileService.delete(offerId,offerUpdateRequestDto.getIsNeedFileDel1(), offerUpdateRequestDto.getIsNeedFileDel2());
         }
 
         if(files.size() > 0) fileService.saveList(offer, files);

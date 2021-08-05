@@ -4,7 +4,6 @@ import com.jpa.offer.dto.FileResponseDto;
 import com.jpa.offer.dto.OfferDetailResponseDto;
 import com.jpa.offer.dto.OfferListResponseDto;
 import com.jpa.offer.dto.SearchCondition;
-import com.jpa.offer.entity.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;

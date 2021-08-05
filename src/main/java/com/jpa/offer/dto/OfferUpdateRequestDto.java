@@ -42,7 +42,9 @@ public class OfferUpdateRequestDto {
     @Pattern(regexp = "^01(?:0|1|[6-9])-(\\d{3}|\\d{4})-(\\d{4})$", message = "숫자, -을 포함해 휴대전화 형식에 맞게 입력해주세요.")
     private String phone;
 
-    @ApiModelProperty(value = "파일 삭제 여부")
-    private List<FileDelRequestDto> fileDelYns = new ArrayList<>();
+    @ApiModelProperty(value = "피일 삭제 여부1", required = true, example = "false")
+    private Boolean isNeedFileDel1;
+    @ApiModelProperty(value = "피일 삭제 여부2", required = true, example = "false")
+    private Boolean isNeedFileDel2;
 
 }

@@ -19,8 +19,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.List;
-
 @Configuration
 @EnableSwagger2
 @RequiredArgsConstructor
@@ -57,9 +55,5 @@ public class SwaggerConfig {
 
         @ApiModelProperty(value = "페이지 크기", allowableValues="range[0, 100]")
         private Integer size;
-
-        /*@ApiModelProperty(value = "정렬(사용법: 컬럼명,ASC|DESC)")
-        private List<String> sort;*/
     }
-
 }

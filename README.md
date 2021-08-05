@@ -52,7 +52,7 @@
 | /offer/{offerId}  | 제안글 삭제 | DELETE | offerId |       |
 | /answer/{offerId} | 답변 등록  | POST | AnswerCreateDto |       |
 | /answer/{answerId}| 답변 수정  | PUT  | AnswerUpdateDto, answerId |       |
-| /answer/{answerId}| 답변 삭제  | DELETE | offerId, answerId |       |
+| /answer/{offerId}/{answerId}| 답변 삭제  | DELETE | offerId, answerId |       |
 
 
 ---

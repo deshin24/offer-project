@@ -84,6 +84,7 @@ public class OfferService {
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 제안글 입니다."));
 
+        // 전체 결과 파일 수 체크 => 2개 이상일 경우 exception
         List<File> findFiles = fileRepository.findByOfferId(offerId);
         int totalFile = findFiles.size();
         if(offerUpdateRequestDto.getIsNeedFileDel1()) totalFile -= 1;
@@ -93,10 +94,12 @@ public class OfferService {
              throw new IllegalArgumentException("2개 이상의 파일을 저장할 수 없습니다.");
         }
 
+        // 기존 파일 삭제
         if(offerUpdateRequestDto.getIsNeedFileDel1() || offerUpdateRequestDto.getIsNeedFileDel2()){
             fileService.delete(offerId,offerUpdateRequestDto.getIsNeedFileDel1(), offerUpdateRequestDto.getIsNeedFileDel2());
         }
 
+        // 새로운 파일 등록
         if(files.size() > 0) fileService.saveList(offer, files);
 
         return offer.update(offerUpdateRequestDto).getId();

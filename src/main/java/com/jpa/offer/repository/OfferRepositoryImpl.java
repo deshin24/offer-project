@@ -13,7 +13,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 
@@ -45,6 +44,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         String keyword = condition.getSearchKeyword();
 
         if (keyword != null) {
+            // 숫자일 경우 offer id로 검색
             if(keyword.matches("[+-]?\\d*(\\.\\d+)?")){
                 Long offerId = Long.parseLong(keyword);
                 builder.and(offer.id.eq(offerId));

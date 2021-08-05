@@ -40,22 +40,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
     @Override
     public Page<OfferListResponseDto> search(SearchCondition condition, Pageable pageable) {
 
-        BooleanBuilder builder = new BooleanBuilder();
-        String keyword = condition.getSearchKeyword();
-
-        if (keyword != null) {
-            // 숫자일 경우 offer id로 검색
-            if(keyword.matches("[+-]?\\d*(\\.\\d+)?")){
-                Long offerId = Long.parseLong(keyword);
-                builder.and(offer.id.eq(offerId));
-            }else{
-                builder.or(offer.title.contains(keyword));
-                builder.or(offer.content.contains(keyword));
-                builder.or(offer.companyName.eq(keyword));
-            }
-        }
-
-       QueryResults<OfferListResponseDto> results = queryFactory
+        QueryResults<OfferListResponseDto> results = queryFactory
                 .select(Projections.fields(
                         OfferListResponseDto.class,
                         offer.id,
@@ -67,7 +52,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                         offer.phone,
                         offer.createdDate))
                .from(offer)
-               .where(builder)
+               .where(getBooleanBuilder(condition))
                .orderBy(
                        offer.createdDate.desc())
                .offset(pageable.getOffset())
@@ -96,6 +81,7 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
     }
 
     // 해당 제안글의 파일 리스트
+
     private List<FileResponseDto> getFileResponseDtos(Long id) {
         return queryFactory
                 .select(Projections.fields(
@@ -107,7 +93,6 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                 .where(fileOfferIdEq(id))
                 .fetchResults().getResults();
     }
-
     private OfferDetailResponseDto getOfferDetailResponseDto(Long id) {
         return queryFactory
                 .select(Projections.fields(
@@ -136,12 +121,23 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
                 .fetchOne();
     }
 
-    private BooleanExpression searchKeywordEq(String keyword){
-        if( keyword != null ){
+    // or 조건을 위해 BooleanBuilder 사용
+    private BooleanBuilder getBooleanBuilder(SearchCondition condition) {
+        BooleanBuilder builder = new BooleanBuilder();
+        String keyword = condition.getSearchKeyword();
 
-
+        if (keyword != null) {
+            // 숫자일 경우 offer id로 검색
+            if(keyword.matches("[+-]?\\d*(\\.\\d+)?")){
+                Long offerId = Long.parseLong(keyword);
+                builder.and(offer.id.eq(offerId));
+            }else{
+                builder.or(offer.title.contains(keyword));
+                builder.or(offer.content.contains(keyword));
+                builder.or(offer.companyName.eq(keyword));
+            }
         }
-        return null;
+        return builder;
     }
 
     private BooleanExpression fileOfferIdEq(Long id) {
@@ -152,19 +148,4 @@ public class OfferRepositoryImpl implements OfferRepositoryCustom{
         return id != null ? offer.id.eq(id) : null;
     }
 
-    private BooleanExpression titleLike(String title) {
-        return title != null ? offer.title.contains(title) : null;
-    }
-
-    private BooleanExpression contentLike(String content) {
-        return content != null ? offer.content.contains(content) : null;
-    }
-
-    private BooleanExpression serviceTypeEq(OfferServiceType serviceType) {
-        return serviceType != null ? offer.serviceType.eq(serviceType) : null;
-    }
-
-    private BooleanExpression companyEq(String companyName) {
-        return companyName != null ? offer.companyName.eq(companyName) : null;
-    }
 }

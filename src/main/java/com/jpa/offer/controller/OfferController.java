@@ -11,9 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +36,19 @@ public class OfferController {
      */
     @ApiOperation(value = "제안 등록")
     @PostMapping(value = "/", produces = "application/json; charset=UTF-8")
-    public ResponseEntity create(OfferCreateRequestDto offerRequestDto,
+    public ResponseEntity create(@Valid OfferCreateRequestDto offerRequestDto, BindingResult result,
                                  @RequestPart(value = "file1", required = false) MultipartFile file1,
                                  @RequestPart(value = "file2", required = false) MultipartFile file2) throws IOException {
+
+        ResponseEntity sb = getResponseEntity(result);
+        if (sb != null) return sb;
+
         List<MultipartFile> files = new ArrayList<>();
         if(file1 != null) files.add(file1);
         if(file2 != null) files.add(file2);
 
         if(!userCheckService.checkUser(offerRequestDto.getUserId())){
-            return new ResponseEntity("제안 등  권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("제안 등록 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity(offerService.create(offerRequestDto, files), HttpStatus.CREATED);
@@ -86,9 +93,13 @@ public class OfferController {
                   notes = "제안 내용을 수정 합니다." )
     @PutMapping(value = "/{offerId}")
     public ResponseEntity update(@PathVariable Long offerId,
-                                 OfferUpdateRequestDto offerUpdateRequestDto,
+                                 @Valid OfferUpdateRequestDto offerUpdateRequestDto, BindingResult result,
                                  @RequestPart(value = "file1", required = false) MultipartFile file1,
                                  @RequestPart(value = "file2", required = false) MultipartFile file2) throws IOException {
+
+        ResponseEntity sb = getResponseEntity(result);
+        if (sb != null) return sb;
+
         List<MultipartFile> files = new ArrayList<>();
         if(file1 != null) files.add(file1);
         if(file2 != null) files.add(file2);
@@ -113,5 +124,17 @@ public class OfferController {
             return new ResponseEntity("삭제 권한이 없는 user 입니다.", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity(offerService.delete(offerId), HttpStatus.OK);
+    }
+
+    private ResponseEntity getResponseEntity(BindingResult result) {
+        if(result.hasErrors()){
+            List<ObjectError> list =  result.getAllErrors();
+            StringBuilder sb = new StringBuilder();
+            for(ObjectError e : list) {
+                sb.append(e.getDefaultMessage()+"\n");
+            }
+            return new ResponseEntity(sb, HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 }

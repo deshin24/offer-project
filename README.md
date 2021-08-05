@@ -46,7 +46,7 @@
 | URL               | 실행 작업     | Method Type | Request      | Response     |
 |:------------------|:------------|:------------|:-------------|:-------------|
 | /offer/           | 제안글 등록   | POST | OfferCreateRequestDto |       |
-| /offer/           | 목록 조회(+검색)| GET | SearchCondition | Page<OfferListResponseDto> |
+| /offer/           | 목록 조회(+검색)| GET | SearchCondition | Page\<OfferListResponseDto\> |
 | /offer/{offerId}  | 제안글 상세(+답변상세) | GET | offerId | OfferDetailResponseDto |
 | /offer/{offerId}  | 제안글 수정 | PUT  | OfferUpdateRequestDto, offerId |       |
 | /offer/{offerId}  | 제안글 삭제 | DELETE | offerId |       |
